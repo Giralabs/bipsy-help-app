@@ -1,0 +1,59 @@
+---
+import type { Audience, HelpCategory } from '../data/help';
+import { SUPPORT_EMAIL } from '../data/site';
+
+interface Props { audience: Audience; cat: HelpCategory }
+const { audience, cat } = Astro.props;
+---
+
+<article class="doc">
+  <div class="container doc__inner">
+    <!-- The other topics stay in view: someone who lands on the wrong one
+         should not have to go back to find the right one. -->
+    <aside class="doc__side">
+      <a class="doc__back" href={audience.base}>
+        <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>Todos los temas
+      </a>
+      <nav aria-label="Temas">
+        {audience.categories.map((c) => (
+          <a class:list={['doc__link', { 'is-on': c.id === cat.id }]} href={`${audience.base}/${c.id}`}
+             aria-current={c.id === cat.id ? 'page' : undefined}>
+            <span class="material-symbols-rounded" aria-hidden="true">{c.icon}</span>
+            <span>{c.label}</span>
+          </a>
+        ))}
+      </nav>
+    </aside>
+
+    <div class="doc__main">
+      <nav class="crumbs" aria-label="Estás en">
+        <a href={audience.base}>{audience.nav}</a>
+        <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+        <span aria-current="page">{cat.label}</span>
+      </nav>
+
+      <header class="doc__head">
+        <span class="icon-tile"><span class="material-symbols-rounded">{cat.icon}</span></span>
+        <h1>{cat.label}</h1>
+        <p class="lead">{cat.blurb}</p>
+      </header>
+
+      <!-- Everything open. A help page is for reading, and a list of closed
+           rows makes you click once per question to find out if it is the
+           one you wanted. -->
+      {cat.items.map((item, i) => (
+        <section class="a" id={`a${i}`}>
+          <h2 class="a__q">{item.q}</h2>
+          <p class="a__a">{item.a}</p>
+        </section>
+      ))}
+
+      <footer class="doc__foot card">
+        <p class="body">
+          ¿No estaba aquí? Escríbenos a <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> y
+          te contestamos.
+        </p>
+      </footer>
+    </div>
+  </div>
+</article>

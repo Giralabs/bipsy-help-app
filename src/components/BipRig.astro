@@ -1,0 +1,44 @@
+---
+/**
+ * Mr. Bip, cut into layers and animated.
+ *
+ * MB-08 is a still render; `bipsy-business-web-app/scripts/build-bip-rigs.mjs`
+ * cuts it into a body and the gesturing arm and prints the transform-origins
+ * below. The arm turns on its armpit, so the hand travels and the shoulder
+ * stays put. No head layer: this one wears a headset whose earcups and boom
+ * mic stick out past the skin, and the other hand rests on one of them, so a
+ * head that turned would leave all three behind.
+ *
+ * Bumped whenever the layer files are regenerated: they live in `public/`,
+ * which is served without hashing, so their URLs never change on their own.
+ */
+const VERSION = 1;
+const LAYERS = [
+  { file: 'body', origin: '50% 100%' },
+  { file: 'arm-gesture', origin: '36.70% 54.91%' },
+];
+const label = 'Mr. Bip con cascos de soporte y micrófono, ofreciendo ayuda';
+---
+
+<div class="rig rig--mb-08" role="img" aria-label={label}>
+  <div class="rig__breath">
+    {LAYERS.map((layer, i) => (
+      <img
+        class:list={['rig__layer', `rig__${layer.file}`]}
+        src={`/mr_bip/rig/mb-08/${layer.file}.webp?v=${VERSION}`}
+        style={`transform-origin:${layer.origin};z-index:${i + 1}`}
+        alt="" aria-hidden="true" width="720" height="1231" decoding="async"
+      />
+    ))}
+  </div>
+</div>
+
+<script>
+  // Off screen it is not worth a compositor frame.
+  const rig = document.querySelector<HTMLElement>('.rig');
+  if (rig && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      rig.classList.toggle('rig--paused', !entry.isIntersecting);
+    }).observe(rig);
+  }
+</script>

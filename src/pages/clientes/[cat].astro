@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import { audienceOf } from '../../data/help';
+
+export function getStaticPaths() {
+  const audience = audienceOf('clientes');
+  return audience.categories.map((cat) => ({ params: { cat: cat.id }, props: { cat } }));
+}
+
+const { cat } = Astro.props;
+const audience = audienceOf('clientes');
+---
+
+<Base
+  audience="clientes"
+  title={`${cat.label} · Ayuda de Bipsy`}
+  description={cat.blurb}
+>
+  <ArticleList audience={audience} cat={cat} />
+</Base>

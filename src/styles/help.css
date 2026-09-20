@@ -1,0 +1,434 @@
+/* Everything the help centre adds on top of the design system in global.css.
+ *
+ * ⚠️ Nothing here relies on `.card`. global.css has `a.card { display: block }`,
+ * which is more specific than a single class, so any link styled as a card
+ * and then laid out with a plain `.something { display: flex }` silently
+ * stays a block — which is what flattened the first version of these tiles.
+ * The cards below bring their own surface. */
+
+/* global.css sólo hace `a { color: inherit }`; el subrayado lo quitaba en
+   `a.card`, y aquí las tarjetas ya no son `.card`. Se quita de raíz y se
+   devuelve abajo a los enlaces que van dentro de un texto, que son los
+   únicos donde hace falta para distinguirlos. */
+a { text-decoration: none; }
+
+/* `[hidden]` lo pone el UA con `display: none`, que pierde contra cualquier
+   `display` de una clase. Sin esto, el panel de resultados del buscador se
+   queda pintado como una barra gris vacía. */
+[hidden] { display: none !important; }
+
+/* ===== CHROME ========================================================= */
+body { display: flex; flex-direction: column; min-height: 100dvh; }
+.main { flex: 1; }
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  background: var(--clr-accent);
+  color: var(--clr-on-accent);
+  font-weight: 700;
+}
+.skip:focus { left: 16px; top: 16px; }
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--clr-bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--clr-line);
+}
+
+.bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: var(--header-h);
+}
+
+.bar__brand { display: flex; align-items: center; gap: 12px; }
+/* 38px, the same as the header of bipsy-business-web-app. The Business
+   lockup stacks "Bipsy" over a much smaller "Business": below about 34px
+   that second line turns to mush and the whole mark reads as broken. */
+.bar__brand img { height: 38px; width: auto; display: block; }
+
+.bar__tag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--clr-surface-2);
+  color: var(--clr-text-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.bar__nav { display: flex; gap: 4px; }
+.bar__nav a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text-2);
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+.bar__nav a:hover { background: var(--clr-surface-2); color: var(--clr-text); }
+.bar__nav a.is-on { background: var(--clr-accent); color: var(--clr-on-accent); }
+
+.foot {
+  margin-top: 64px;
+  padding-block: 28px;
+  border-top: 1px solid var(--clr-line);
+  background: var(--clr-surface);
+}
+.foot__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+.foot__note { font-size: 0.9375rem; color: var(--clr-text-2); }
+.foot__note a { color: var(--clr-accent-text); font-weight: 600; }
+.foot__links { display: flex; gap: 18px; }
+.foot__links a { font-size: 0.9375rem; font-weight: 600; color: var(--clr-text-2); }
+.foot__links a:hover { color: var(--clr-text); }
+
+@media (max-width: 560px) {
+  .bar__inner { gap: 12px; }
+  .bar__tag { display: none; }
+  .bar__brand img { height: 32px; }
+  .bar__nav a { padding: 8px 10px; font-size: 0.875rem; }
+}
+
+/* ===== LANDING ======================================================== */
+.lead-in {
+  position: relative;
+  padding-block: clamp(40px, 6vw, 72px) clamp(28px, 4vw, 48px);
+  background:
+    radial-gradient(60% 120% at 15% 0%, color-mix(in srgb, var(--clr-accent) 14%, transparent), transparent 70%),
+    var(--clr-bg);
+  border-bottom: 1px solid var(--clr-line);
+}
+
+.lead-in__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+}
+
+.lead-in__title {
+  font-family: var(--ff-display);
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.lead-in__lead { margin-top: 14px; max-width: 52ch; font-size: 1.0625rem; color: var(--clr-text-2); }
+.lead-in__meta { margin-top: 18px; font-size: 0.875rem; color: var(--clr-text-3); }
+.lead-in__art { justify-self: end; width: 100%; }
+
+@media (max-width: 860px) {
+  .lead-in__inner { grid-template-columns: 1fr; }
+  .lead-in__art { display: none; }
+}
+
+/* ===== SEARCH ========================================================= */
+.find { position: relative; margin-top: 26px; max-width: 560px; }
+
+.find__box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 58px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  background: var(--clr-surface);
+  box-shadow: var(--shadow-pop);
+  transition: box-shadow var(--dur-medium) ease;
+}
+.find__box:focus-within { box-shadow: var(--shadow-pop), 0 0 0 2px var(--clr-accent); }
+.find__box > .material-symbols-rounded { color: var(--clr-text-3); }
+
+.find input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--ff);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--clr-text);
+}
+.find input::placeholder { color: var(--clr-text-3); }
+.find input::-webkit-search-cancel-button { display: none; }
+
+.find__clear {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: var(--clr-field);
+  color: var(--clr-text-2);
+  cursor: pointer;
+}
+.find__clear:hover { background: var(--clr-surface-2); color: var(--clr-text); }
+
+.find__results {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  padding: 6px;
+  display: grid;
+  gap: 2px;
+  max-height: 60vh;
+  overflow: auto;
+}
+.hit {
+  display: grid;
+  gap: 2px;
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  color: inherit;
+}
+.hit:hover { background: var(--clr-field); }
+.hit__q { font-weight: 650; font-size: 0.9375rem; }
+.hit__c { font-size: 0.8125rem; color: var(--clr-text-3); }
+.find__none { margin-top: 10px; font-size: 0.9375rem; color: var(--clr-text-3); }
+
+/* ===== LANDING BLOCKS ================================================= */
+.block-title {
+  font-family: var(--ff-display);
+  font-size: 1.375rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.block-title--spaced { margin-top: 48px; }
+
+.popular { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 0; }
+.popular a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 18px;
+  border-radius: var(--r-lg);
+  background: var(--clr-surface);
+  font-weight: 600;
+  color: inherit;
+  transition: background var(--dur-fast) ease, transform var(--dur-medium) var(--ease-out);
+}
+.popular a:hover { background: var(--clr-surface-2); transform: translateX(3px); }
+.popular .material-symbols-rounded { font-size: 20px; color: var(--clr-accent-text); }
+
+@media (max-width: 720px) { .popular { grid-template-columns: 1fr; } }
+
+/* ===== CATEGORY GRID ================================================== */
+.cats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+  gap: 14px;
+}
+
+/* Grid, not flex: the rows are named, so the blurb and the count line up
+   across every card however long the titles are. */
+.cat {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 6px;
+  padding: 22px;
+  min-height: 190px;
+  border-radius: var(--r-xl);
+  background: var(--clr-surface);
+  color: inherit;
+  transition: background var(--dur-medium) ease, transform var(--dur-slow) var(--ease-out);
+}
+.cat:hover { background: var(--clr-surface-2); transform: translateY(-3px); }
+
+.cat__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--clr-accent-dim);
+  color: var(--clr-accent-text);
+  margin-bottom: 8px;
+}
+.cat__icon .material-symbols-rounded { font-size: 24px; }
+
+.cat__name {
+  font-family: var(--ff-display);
+  font-size: 1.125rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.cat__blurb { font-size: 0.9375rem; line-height: 1.5; color: var(--clr-text-2); }
+.cat__count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--clr-text-3);
+}
+.cat__count .material-symbols-rounded {
+  font-size: 17px;
+  transition: transform var(--dur-medium) var(--ease-out);
+}
+.cat:hover .cat__count { color: var(--clr-accent-text); }
+.cat:hover .cat__count .material-symbols-rounded { transform: translateX(3px); }
+
+/* ===== CATEGORY PAGE ================================================== */
+.doc { padding-block: 40px 16px; }
+.doc__inner {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.doc__side { position: sticky; top: calc(var(--header-h) + 24px); display: grid; gap: 4px; }
+.doc__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--clr-text-3);
+}
+.doc__back:hover { color: var(--clr-text); }
+.doc__back .material-symbols-rounded { font-size: 18px; }
+
+.doc__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text-2);
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+.doc__link .material-symbols-rounded { font-size: 19px; }
+.doc__link:hover { background: var(--clr-surface); color: var(--clr-text); }
+.doc__link.is-on { background: var(--clr-accent-dim); color: var(--clr-accent-text); }
+
+.doc__main { max-width: 760px; }
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-3);
+}
+.crumbs a { color: var(--clr-text-2); }
+.crumbs a:hover { color: var(--clr-text); text-decoration: underline; }
+.crumbs .material-symbols-rounded { font-size: 16px; }
+
+.doc__head { margin: 18px 0 8px; }
+.doc__head h1 {
+  margin-top: 16px;
+  font-family: var(--ff-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+.doc__head .lead { margin-top: 10px; color: var(--clr-text-2); }
+
+/* One article per question, separated by a rule rather than boxed: it reads
+   as a page of documentation instead of a stack of widgets. */
+.a { padding-block: 26px; border-top: 1px solid var(--clr-line); scroll-margin-top: calc(var(--header-h) + 20px); }
+.a:first-of-type { margin-top: 20px; }
+.a__q {
+  font-family: var(--ff-display);
+  font-size: 1.1875rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+.a__a { margin-top: 8px; max-width: 68ch; line-height: 1.68; color: var(--clr-text-2); }
+
+/* Los que van dentro de un párrafo sí se subrayan: ahí el color solo no
+   basta para saber que se puede pulsar. */
+.a__a a,
+.doc__foot a,
+.foot__note a,
+.contact__card a,
+.crumbs a:hover { text-decoration: underline; }
+
+.doc__foot { margin-top: 32px; padding: 20px 24px; }
+.doc__foot a { color: var(--clr-accent-text); font-weight: 650; }
+
+@media (max-width: 900px) {
+  .doc__inner { grid-template-columns: 1fr; }
+  .doc__side { position: static; }
+  .doc__side nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .doc__link { padding: 7px 12px; border-radius: 999px; background: var(--clr-surface); }
+}
+
+/* ===== CLOSING CARDS ================================================== */
+.contact { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.contact__card .title { margin-top: 16px; }
+.contact__card .body { margin-top: 6px; }
+.contact__card a { color: var(--clr-text); font-weight: 700; overflow-wrap: anywhere; }
+@media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+
+/* ===== MR. BIP · MB-08 ================================================ */
+.rig { position: relative; width: 100%; aspect-ratio: 720 / 1231; }
+.rig, .rig__breath { transform-origin: 50% 100%; }
+.rig__breath,
+.rig__layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rig__layer { object-fit: fill; }
+.rig--mb-08 .rig__arm-gesture { will-change: transform; }
+
+.rig--mb-08 { animation: bip-sway 8.7s ease-in-out infinite; }
+.rig--mb-08 .rig__breath { animation: bip-breath 4.9s ease-in-out infinite; }
+
+@keyframes bip-sway {
+  0%, 100% { transform: rotate(-0.16deg); }
+  50%      { transform: rotate(0.16deg); }
+}
+@keyframes bip-breath {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  50%      { transform: scaleY(1.005) scaleX(0.9985); }
+}
+
+/* 5.8 s. The open palm draws back a little and then reaches out, twice, each
+   time a bit less. The arm turns on the armpit, so only the arm moves. */
+@keyframes bip-offer {
+  0%   { transform: rotate(0deg);     animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  15%  { transform: rotate(1.2deg);   animation-timing-function: cubic-bezier(0.5, 0, 0.28, 1); }
+  34%  { transform: rotate(-4.5deg);  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  48%  { transform: rotate(-1.8deg);  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  62%  { transform: rotate(-3.4deg);  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  78%  { transform: rotate(-0.8deg);  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  90%  { transform: rotate(-1.8deg);  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  100% { transform: rotate(0deg); }
+}
+.rig--mb-08 .rig__arm-gesture { animation: bip-offer 5.8s infinite; }
+
+/* Off screen it is not worth a compositor frame. */
+.rig--paused,
+.rig--paused .rig__breath,
+.rig--paused .rig__layer { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rig, .rig__breath, .rig__layer { animation: none; }
+  .cat:hover, .popular a:hover { transform: none; }
+}

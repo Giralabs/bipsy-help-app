@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import CategoryGrid from '../../components/CategoryGrid.astro';
+import HelpSearch from '../../components/HelpSearch.astro';
+import BipRig from '../../components/BipRig.astro';
+import { audienceOf, articlesOf } from '../../data/help';
+import { SUPPORT_EMAIL } from '../../data/site';
+
+const audience = audienceOf('clientes');
+const total = articlesOf(audience).length;
+const POPULAR = ['Cómo reservo una cita', 'Cómo cancelo o cambio una cita',
+                 'Por qué me piden una tarjeta', 'No puedo entrar en mi cuenta'];
+const popular = articlesOf(audience).filter((a) => POPULAR.includes(a.q));
+---
+
+<Base
+  audience="clientes"
+  title="Centro de ayuda de Bipsy"
+  description="Ayuda de Bipsy: reservar una cita, cambiarla o cancelarla, pagos y tu cuenta."
+>
+  <section class="lead-in">
+    <div class="container lead-in__inner">
+      <div class="lead-in__copy">
+        <h1 class="lead-in__title">{audience.title}</h1>
+        <p class="lead-in__lead">{audience.lead}</p>
+        <HelpSearch audience={audience} />
+        <p class="lead-in__meta">{total} artículos · {audience.categories.length} temas</p>
+      </div>
+      <div class="lead-in__art"><BipRig /></div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <h2 class="block-title">Por dónde empezar</h2>
+      <ul class="popular">
+        {popular.map((a) => (
+          <li><a href={a.href}>
+            <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+            <span>{a.q}</span>
+          </a></li>
+        ))}
+      </ul>
+
+      <h2 class="block-title block-title--spaced">Todos los temas</h2>
+      <CategoryGrid audience={audience} />
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="container contact">
+      <div class="contact__card card">
+        <span class="icon-tile"><span class="material-symbols-rounded">mail</span></span>
+        <h2 class="title">Escríbenos</h2>
+        <p class="body">A <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>, con «Soporte» en el asunto y desde el correo con el que te registraste. Contestamos en días laborables.</p>
+      </div>
+      <div class="contact__card card">
+        <span class="icon-tile"><span class="material-symbols-rounded">storefront</span></span>
+        <h2 class="title">Si es cosa del negocio</h2>
+        <p class="body">El precio, el horario y la política de cancelación los pone cada negocio. Para eso, lo más rápido es hablar directamente con ellos.</p>
+      </div>
+      <div class="contact__card card">
+        <span class="icon-tile"><span class="material-symbols-rounded">flag</span></span>
+        <h2 class="title">Avisar de un contenido</h2>
+        <p class="body">Una ficha, una foto o una valoración que no debería estar ahí: escríbenos con «Contenido» en el asunto y dinos cuál y por qué.</p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import '../styles/help.css';
+import { BUSINESS_WEB_URL, CLIENT_WEB_URL, SUPPORT_EMAIL } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Which of the two sections is showing, for the bar. */
+  audience: 'negocios' | 'clientes';
+}
+const { title, description, audience } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://ayuda.bipsy.es');
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>{title}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical.href} />
+  <meta name="theme-color" content="#23282E" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ECEEED" media="(prefers-color-scheme: light)" />
+  <meta name="color-scheme" content="dark light" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bipsy" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:locale" content="es_ES" />
+
+  <link rel="icon" type="image/webp" href="/icons/favicon-48.webp" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.webp" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
+</head>
+<body>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <header class="bar">
+    <div class="container bar__inner">
+      <!-- Each half wears its own brand: Bipsy Business for the businesses,
+           Bipsy for the people who book. Landing on the wrong logo is the
+           quickest way to make someone think they are in the wrong place. -->
+      <a href={audience === 'clientes' ? '/clientes' : '/negocios'} class="bar__brand"
+         aria-label={audience === 'clientes' ? 'Ayuda de Bipsy' : 'Ayuda de Bipsy Business'}>
+        {audience === 'clientes' ? (
+          <>
+            <img class="theme-dark-only" src="/assets_bipsy/Combination Marks/combinationmark_mint_horizontal_nobackground.webp" alt="Bipsy" />
+            <img class="theme-light-only" src="/assets_bipsy/Combination Marks/combinationmark_carbon_horizontal_nobackground.webp" alt="Bipsy" />
+          </>
+        ) : (
+          <>
+            <img class="theme-dark-only" src="/assets_bipsy_business/Combination Marks/combinationmark_horizontal_dark_nobackground_trim.webp" alt="Bipsy Business" />
+            <img class="theme-light-only" src="/assets_bipsy_business/Combination Marks/combinationmark_horizontal_light_nobackground_trim.webp" alt="Bipsy Business" />
+          </>
+        )}
+        <span class="bar__tag">Ayuda</span>
+      </a>
+
+      <nav class="bar__nav" aria-label="Secciones de la ayuda">
+        <a href="/negocios" class:list={{ 'is-on': audience === 'negocios' }}
+           aria-current={audience === 'negocios' ? 'page' : undefined}>Para negocios</a>
+        <a href="/clientes" class:list={{ 'is-on': audience === 'clientes' }}
+           aria-current={audience === 'clientes' ? 'page' : undefined}>Para clientes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" class="main" tabindex="-1">
+    <slot />
+  </main>
+
+  <footer class="foot">
+    <div class="container foot__inner">
+      <p class="foot__note">
+        ¿No encuentras lo que buscas? Escríbenos a
+        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+      </p>
+      <nav class="foot__links" aria-label="Volver a Bipsy">
+        <a href={CLIENT_WEB_URL}>Bipsy para clientes</a>
+        <a href={BUSINESS_WEB_URL}>Bipsy Business</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

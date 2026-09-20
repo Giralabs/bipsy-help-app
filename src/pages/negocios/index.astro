@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import CategoryGrid from '../../components/CategoryGrid.astro';
+import HelpSearch from '../../components/HelpSearch.astro';
+import BipRig from '../../components/BipRig.astro';
+import { audienceOf, articlesOf } from '../../data/help';
+import { SUPPORT_EMAIL, SUPPORT_RESPONSE_TIME } from '../../data/site';
+
+const audience = audienceOf('negocios');
+const total = articlesOf(audience).length;
+// The four people ask first, in the order the app is actually used.
+const POPULAR = ['¿Cómo me doy de alta?', '¿Tengo que confirmar cada reserva?',
+                 '¿Cómo invito a alguien a mi equipo?', '¿Cómo se paga la suscripción?'];
+const popular = articlesOf(audience).filter((a) => POPULAR.includes(a.q));
+---
+
+<Base
+  audience="negocios"
+  title="Centro de ayuda de Bipsy Business"
+  description="Ayuda de Bipsy Business: agenda, reservas, equipo, cobros, fichaje, tu ficha y los planes."
+>
+  <section class="lead-in">
+    <div class="container lead-in__inner">
+      <div class="lead-in__copy">
+        <h1 class="lead-in__title">{audience.title}</h1>
+        <p class="lead-in__lead">{audience.lead}</p>
+        <HelpSearch audience={audience} />
+        <p class="lead-in__meta">{total} artículos · {audience.categories.length} temas</p>
+      </div>
+      <div class="lead-in__art"><BipRig /></div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <h2 class="block-title">Por dónde empezar</h2>
+      <ul class="popular">
+        {popular.map((a) => (
+          <li><a href={a.href}>
+            <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+            <span>{a.q}</span>
+          </a></li>
+        ))}
+      </ul>
+
+      <h2 class="block-title block-title--spaced">Todos los temas</h2>
+      <CategoryGrid audience={audience} />
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="container contact">
+      <div class="contact__card card">
+        <span class="icon-tile"><span class="material-symbols-rounded">confirmation_number</span></span>
+        <h2 class="title">Abre un ticket desde la app</h2>
+        <p class="body">Perfil › Soporte › Tickets. Cuéntanos qué pasa y adjunta hasta 4 capturas o documentos. Respondemos en {SUPPORT_RESPONSE_TIME}.</p>
+      </div>
+      <div class="contact__card card">
+        <span class="icon-tile"><span class="material-symbols-rounded">mail</span></span>
+        <h2 class="title">Escríbenos</h2>
+        <p class="body">Si no puedes entrar en la app, escribe a <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> desde el correo de tu cuenta.</p>
+      </div>
+      <div class="contact__card card">
+        <span class="icon-tile"><span class="material-symbols-rounded">lightbulb</span></span>
+        <h2 class="title">Pide una mejora</h2>
+        <p class="body">Con el plan Quality tienes «Solicitudes a Bipsy»: nos cuentas qué echas en falta y te contestamos.</p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,74 @@
+---
+import type { Article, Audience } from '../data/help';
+import { articlesOf } from '../data/help';
+
+interface Props { audience: Audience }
+const { audience } = Astro.props;
+const articles: Article[] = articlesOf(audience);
+
+/**
+ * The index is rendered into the page as JSON rather than fetched: it is a
+ * few kilobytes, the site is static, and this way the search works on the
+ * first keystroke with no request.
+ */
+const index = articles.map((a) => ({ q: a.q, a: a.a.slice(0, 160), c: a.categoryLabel, h: a.href }));
+---
+
+<div class="find">
+  <div class="find__box">
+    <span class="material-symbols-rounded" aria-hidden="true">search</span>
+    <label class="sr-only" for="q">Buscar en la ayuda</label>
+    <input id="q" type="search" autocomplete="off" placeholder={audience.placeholder}
+           role="combobox" aria-expanded="false" aria-controls="find-results" />
+    <button type="button" class="find__clear" hidden aria-label="Borrar la búsqueda">
+      <span class="material-symbols-rounded">close</span>
+    </button>
+  </div>
+
+  <div class="find__results card" id="find-results" role="listbox" hidden></div>
+  <p class="find__none" hidden>No encontramos nada. Prueba con otra palabra.</p>
+</div>
+
+<script define:vars={{ index }}>
+  const box = document.querySelector('.find');
+  if (box) {
+    const input = box.querySelector('input');
+    const results = box.querySelector('.find__results');
+    const none = box.querySelector('.find__none');
+    const clear = box.querySelector('.find__clear');
+
+    // Accent-insensitive: "cancelacion" has to find "cancelación".
+    const plain = (t) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const haystack = index.map((it) => plain(`${it.q} ${it.a} ${it.c}`));
+
+    const render = () => {
+      const q = plain(input.value.trim());
+      clear.hidden = q.length === 0;
+      if (q.length < 2) {
+        results.hidden = true;
+        none.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      const hits = index.filter((_, i) => haystack[i].includes(q)).slice(0, 8);
+      results.innerHTML = hits.map((it) => `
+        <a class="hit" href="${it.h}" role="option">
+          <span class="hit__q">${it.q}</span>
+          <span class="hit__c">${it.c}</span>
+        </a>`).join('');
+      results.hidden = hits.length === 0;
+      none.hidden = hits.length > 0;
+      input.setAttribute('aria-expanded', String(hits.length > 0));
+    };
+
+    input.addEventListener('input', render);
+    clear.addEventListener('click', () => { input.value = ''; input.focus(); render(); });
+    // Escape closes the list without losing what was typed.
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      results.hidden = true;
+      none.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+    });
+  }
+</script>
