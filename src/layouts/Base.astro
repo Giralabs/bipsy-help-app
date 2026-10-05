@@ -10,7 +10,7 @@ interface Props {
   audience: 'negocios' | 'clientes';
 }
 const { title, description, audience } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://ayuda.bipsy.es');
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://help.bipsy.es');
 ---
 
 <!doctype html>

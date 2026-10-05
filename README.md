@@ -1,7 +1,7 @@
 # bipsy-help-app
 
 El centro de ayuda de Bipsy, en **Astro**. Se despliega en su propio
-subdominio (`ayuda.bipsy.es`) y lo enlazan las otras dos webs.
+subdominio (`help.bipsy.es`) y lo enlazan las otras dos webs.
 
 ```
 npm install
@@ -51,7 +51,7 @@ ignoran el atributo `name`.
 
 En las otras dos apps el enlace sale de `HELP_URL`, que **cambia solo**: si
 estás navegando en `localhost` apunta a `http://localhost:4321` (este dev
-server) y si no, a `https://ayuda.bipsy.es`. Está en:
+server) y si no, a `https://help.bipsy.es`. Está en:
 
 - `bipsy-business-web-app/src/app/data/site.data.ts`
 - `bipsy-web-app/src/app/data/site.data.ts`
