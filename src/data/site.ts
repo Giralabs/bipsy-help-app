@@ -11,15 +11,12 @@ export const TRIAL_DAYS = 30;
 /** Support answers tickets in 24–48 working hours (support_screen.dart). */
 export const SUPPORT_RESPONSE_TIME = '24-48 h laborables';
 
-/** Placeholder target for every external link that does not exist yet. */
-const PLACEHOLDER_URL = 'https://www.youtube.com';
-
-// TODO: point these at the production domains once they are deployed.
-// The two webs link here the other way round and already switch to their
-// local server while developing; do the same here once these are real.
+// The way back to the two products. Both pointed at youtube.com, left over
+// from a template, so «Bipsy para clientes» and «Bipsy Business» in the footer
+// led somewhere else entirely.
 /** The customer-facing web (bipsy-web-app). */
-export const CLIENT_WEB_URL = PLACEHOLDER_URL;
+export const CLIENT_WEB_URL = 'https://bipsy.es';
 /** The business web (bipsy-business-web-app). */
-export const BUSINESS_WEB_URL = PLACEHOLDER_URL;
+export const BUSINESS_WEB_URL = 'https://business.bipsy.es';
 
 export const SUPPORT_EMAIL = 'soporte@bipsy.es';
