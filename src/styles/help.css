@@ -83,18 +83,35 @@ body { display: flex; flex-direction: column; min-height: 100dvh; }
   border-top: 1px solid var(--clr-line);
   background: var(--clr-surface);
 }
-.foot__inner {
+/* Contact on the left, then a column per product and the legal texts. */
+.foot__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+  gap: 28px 32px;
+}
+.foot__title { margin-bottom: 10px; font-size: 0.8125rem; font-weight: 800; color: var(--clr-text); }
+.foot__note { max-width: 42ch; font-size: 0.9375rem; line-height: 1.6; color: var(--clr-text-2); }
+.foot__note a { color: var(--clr-accent-text); font-weight: 600; }
+.foot__col { display: flex; flex-direction: column; gap: 8px; }
+.foot__col a { font-size: 0.875rem; font-weight: 600; color: var(--clr-text-2); }
+.foot__col a:hover { color: var(--clr-text); }
+.foot__bottom {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px 24px;
+  gap: 8px 16px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--clr-line);
+  font-size: 0.8125rem;
+  color: var(--clr-text-3, var(--clr-text-2));
 }
-.foot__note { font-size: 0.9375rem; color: var(--clr-text-2); }
-.foot__note a { color: var(--clr-accent-text); font-weight: 600; }
-.foot__links { display: flex; gap: 18px; }
-.foot__links a { font-size: 0.9375rem; font-weight: 600; color: var(--clr-text-2); }
-.foot__links a:hover { color: var(--clr-text); }
+.foot__bottom a { color: inherit; font-weight: 600; }
+.foot__bottom a:hover { color: var(--clr-text); }
+@media (max-width: 860px) {
+  .foot__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot__about { grid-column: 1 / -1; }
+}
 
 @media (max-width: 560px) {
   .bar__inner { gap: 12px; }
