@@ -1,7 +1,12 @@
-import { TRIAL_DAYS, SUPPORT_RESPONSE_TIME } from './site';
+import { BUSINESS_PHOTOS, PRICE_BIPSY, PRICE_QUALITY, SUPPORT_RESPONSE_TIME, WELCOME_DAYS } from './site';
 
 /**
  * Frequently asked questions. Every answer describes what the app does today.
+ *
+ * This file is a copy of `faq.data.ts` in bipsy-business-web-app and stays a
+ * copy, so the two can be diffed: the only change is that the constants come
+ * from `site.ts` instead of `plans.data.ts` / `site.data.ts`. Everything
+ * written for the help centre itself lives in `faq-negocios.ts`.
  *
  * ⚠️ The FAQ inside the business app (info_sheets.dart) is partly out of date
  * —it still says workers are invited by email—, so these answers were written
@@ -23,11 +28,11 @@ export interface FaqGroup {
 export const HOME_FAQ: FaqItem[] = [
   {
     q: '¿Qué es Bipsy Business?',
-    a: 'Es la app para gestionar un negocio que trabaja con cita: agenda, reservas online, clientes, equipo, fichaje y finanzas. Tus clientes reservan desde Bipsy, la app gratuita para ellos, y tú lo recibes todo en Bipsy Business.',
+    a: 'Es la app para gestionar un negocio que trabaja con cita: agenda, reservas online, clientes, equipo, fichaje y cobros. Tus clientes reservan desde Bipsy, la app gratuita para ellos, y tú lo recibes todo en Bipsy Business.',
   },
   {
     q: '¿Cuánto cuesta?',
-    a: `Bipsy Business cuesta 18,99 € al mes y Quality, 27,99 € al mes. Los primeros ${TRIAL_DAYS} días son gratis y no hay permanencia.`,
+    a: `Bipsy Business cuesta ${PRICE_BIPSY} € al mes y Quality, ${PRICE_QUALITY} € al mes. Al darte de alta tienes ${WELCOME_DAYS} días de prueba, el primer mes de tu primer plan es gratis y no hay permanencia.`,
   },
   {
     q: '¿Tengo que pagar por cada trabajador?',
@@ -39,7 +44,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: '¿Mis clientes tienen que descargarse algo?',
-    a: 'Pueden reservar desde la app de Bipsy, que es gratuita en Android e iPhone, o desde la web de Bipsy. Los clientes que ya tienes los puedes importar desde los contactos de tu móvil e invitarles con un mensaje ya escrito.',
+    a: 'Pueden reservar desde la app de Bipsy, que es gratuita, o desde la web de Bipsy. Los clientes que ya tienes los puedes importar desde los contactos de tu móvil e invitarles con un mensaje ya escrito.',
   },
   {
     q: '¿Sirve si trabajo solo o a domicilio?',
@@ -124,19 +129,19 @@ export const HELP_FAQ: FaqGroup[] = [
     items: [
       {
         q: '¿Cómo se paga la suscripción?',
-        a: 'A través de Google Play o App Store, con la cuenta de tu móvil. La tienda te enseña el precio final con impuestos antes de confirmar.',
+        a: 'Como prefieras: desde el panel web con tarjeta, cuenta bancaria (SEPA), Apple Pay o Google Pay (el pago lo procesa Stripe), o desde la app del móvil, con tu cuenta de Google Play o App Store. En los dos casos ves el precio final antes de confirmar.',
       },
       {
         q: '¿Cómo cancelo?',
-        a: 'Desde la sección de suscripciones de Google Play o App Store; en la app, Mi plan te lleva directo. Mantienes el acceso hasta el final del periodo pagado.',
+        a: 'Si pagas desde el panel web, desde Mi plan, con un clic. Si lo contrataste en el móvil, desde las suscripciones de Google Play o App Store; en la app, Mi plan te lleva directo. En los dos casos mantienes el acceso hasta el final del periodo pagado.',
       },
       {
         q: '¿Qué pasa si dejo de pagar?',
-        a: 'No se borra nada. La app te pide elegir un plan para seguir usándola, y tus trabajadores ven que el negocio no tiene suscripción activa. Si pierdes Quality, tu personalización se queda guardada y vuelve al contratarlo.',
+        a: `No se borra nada. La app te pide elegir un plan para seguir usándola, y tus trabajadores ven que el negocio no tiene suscripción activa. Si pasas de Quality a Bipsy Business, las fotos que pasen de ${BUSINESS_PHOTOS} se guardan sin verse y vuelven al contratarlo otra vez.`,
       },
       {
         q: '¿Bipsy emite facturas a mis clientes?',
-        a: 'No. Finanzas es un registro interno de cobros, gastos, caja y comisiones con informe de IVA, pero no emite facturas ni las envía a Hacienda.',
+        a: 'No. Bipsy Business cobra las citas y lleva el dinero a tu cuenta, pero no emite facturas ni las envía a Hacienda: eso lo sigues haciendo con tu programa de facturación o tu gestoría.',
       },
     ],
   },
@@ -151,7 +156,7 @@ export const HELP_FAQ: FaqGroup[] = [
       },
       {
         q: '¿Puedo pedir una función nueva?',
-        a: 'Con el plan Quality tienes «Solicitudes a Bipsy»: pides mejoras y cambios en la app, las leemos una a una y te contestamos.',
+        a: 'Sí, con cualquier plan: desde «Solicitudes a Bipsy» en la app pides mejoras y cambios, las leemos una a una y te contestamos.',
       },
     ],
   },

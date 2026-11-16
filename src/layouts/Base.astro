@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/help.css';
-import { BUSINESS_WEB_URL, CLIENT_WEB_URL, SUPPORT_EMAIL } from '../data/site';
+import { FOOTER_COLUMNS, GIRALABS_URL, SUPPORT_EMAIL } from '../data/site';
 
 interface Props {
   title: string;
@@ -77,15 +77,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://help.bipsy.
   </main>
 
   <footer class="foot">
-    <div class="container foot__inner">
-      <p class="foot__note">
-        ¿No encuentras lo que buscas? Escríbenos a
-        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
-      </p>
-      <nav class="foot__links" aria-label="Volver a Bipsy">
-        <a href={CLIENT_WEB_URL}>Bipsy para clientes</a>
-        <a href={BUSINESS_WEB_URL}>Bipsy Business</a>
-      </nav>
+    <div class="container">
+      <div class="foot__grid">
+        <div class="foot__about">
+          <p class="foot__title">¿No encuentras lo que buscas?</p>
+          <p class="foot__note">
+            Escríbenos a <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> y te contestamos en días laborables.
+            Si tienes Bipsy Business, también puedes abrir un ticket desde la app, en Perfil › Soporte.
+          </p>
+        </div>
+        {FOOTER_COLUMNS.map((col) => (
+          <nav class="foot__col" aria-label={col.title}>
+            <p class="foot__title">{col.title}</p>
+            {col.links.map((l) => <a href={l.href}>{l.label}</a>)}
+          </nav>
+        ))}
+      </div>
+      <div class="foot__bottom">
+        <span>© {new Date().getFullYear()} Bipsy</span>
+        <a href={GIRALABS_URL}>Una aplicación de Giralabs</a>
+      </div>
     </div>
   </footer>
 </body>

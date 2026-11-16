@@ -9,7 +9,8 @@ import { SUPPORT_EMAIL } from '../../data/site';
 const audience = audienceOf('clientes');
 const total = articlesOf(audience).length;
 const POPULAR = ['Cómo reservo una cita', 'Cómo cancelo o cambio una cita',
-                 'Por qué me piden una tarjeta', 'No puedo entrar en mi cuenta'];
+                 'Por qué me piden una tarjeta', 'No puedo entrar en mi cuenta',
+                 'No hay hueco el día que quiero', '¿Puedo pagar la cita desde la app?'];
 const popular = articlesOf(audience).filter((a) => POPULAR.includes(a.q));
 ---
 

@@ -10,7 +10,8 @@ const audience = audienceOf('negocios');
 const total = articlesOf(audience).length;
 // The four people ask first, in the order the app is actually used.
 const POPULAR = ['¿Cómo me doy de alta?', '¿Tengo que confirmar cada reserva?',
-                 '¿Cómo invito a alguien a mi equipo?', '¿Cómo se paga la suscripción?'];
+                 '¿Cómo invito a alguien a mi equipo?', '¿Cómo se paga la suscripción?',
+                 '¿Puedo cobrar si un cliente cancela tarde o no viene?', '¿Cómo funcionan los días de prueba y el mes gratis?'];
 const popular = articlesOf(audience).filter((a) => POPULAR.includes(a.q));
 ---
 
@@ -63,7 +64,7 @@ const popular = articlesOf(audience).filter((a) => POPULAR.includes(a.q));
       <div class="contact__card card">
         <span class="icon-tile"><span class="material-symbols-rounded">lightbulb</span></span>
         <h2 class="title">Pide una mejora</h2>
-        <p class="body">Con el plan Quality tienes «Solicitudes a Bipsy»: nos cuentas qué echas en falta y te contestamos.</p>
+        <p class="body">Con cualquier plan, desde «Solicitudes a Bipsy» en la app: nos cuentas qué echas en falta, lo leemos uno a uno y te contestamos.</p>
       </div>
     </div>
   </section>
